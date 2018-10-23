@@ -2,7 +2,8 @@
   "name": "uniform-react-components",
   "version": "0.1.0",
   "description": "Components with the same simple interface to handle onChange events",
-  "main": "index.js",
+  "main": "dist/bundle.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -16,12 +17,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lynt && pretty-quick --staged",
+      "pre-commit": "npm test && lynt && pretty-quick --staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lynt": {
     "typescript": true,
+    "react": true,
     "rules": {
       "no-console": "on"
     }
@@ -29,17 +31,13 @@
   "jest": {
     "moduleFileExtensions": [
       "ts",
+      "tsx",
       "js"
     ],
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "tsconfig.json"
-      }
-    },
-    "testRegex": ".*\\.test\\.ts$"
+    "testRegex": ".*\\.test\\.tsx?$"
   },
   "keywords": [],
   "license": "MIT",
@@ -55,10 +53,14 @@
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
     "@commitlint/config-conventional": "^7.1.2",
+    "@types/enzyme": "^3.1.14",
+    "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^23.3.1",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
     "@types/webpack": "^4.4.17",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
     "husky": "^1.1.2",
     "jest": "^23.5.0",
     "lynt": "^0.5.3",
@@ -66,6 +68,7 @@
     "pretty-quick": "^1.8.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-test-renderer": "^16.5.2",
     "semantic-release": "^15.10.5",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^23.1.4",
@@ -75,5 +78,8 @@
     "typescript": "^3.0.3",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "dynamic-on-change": "^1.0.0"
   }
 }
