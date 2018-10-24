@@ -1,6 +1,6 @@
 {
   "name": "uniform-react-components",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "description": "Components with the same simple interface to handle onChange events",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
