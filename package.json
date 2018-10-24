@@ -2,7 +2,7 @@
   "name": "uniform-react-components",
   "version": "0.1.0",
   "description": "Components with the same simple interface to handle onChange events",
-  "main": "dist/bundle.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "npm run build",
     "prebuild": "rm -rf dist",
-    "build": "webpack -r ts-node --config webpack-config.ts",
+    "build": "tsc -p tsconfig-build.json",
     "test": "jest",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
@@ -58,7 +58,7 @@
     "@types/jest": "^23.3.1",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
-    "@types/webpack": "^4.4.17",
+    "dynamic-on-change": "^1.0.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "husky": "^1.1.2",
@@ -72,13 +72,11 @@
     "semantic-release": "^15.10.5",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^23.1.4",
-    "ts-loader": "^5.2.2",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.0.3",
-    "webpack": "^4.16.1",
-    "webpack-cli": "^3.1.0"
+    "typescript": "^3.0.3"
   },
-  "dependencies": {
-    "dynamic-on-change": "^1.0.0"
-  }
+  "peerDependencies": {
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
+  },
+  "dependencies": {}
 }
