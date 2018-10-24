@@ -29,6 +29,9 @@
     }
   },
   "jest": {
+    "setupFiles": [
+      "./.setup-jest.ts"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
