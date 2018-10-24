@@ -14,55 +14,48 @@ Also exports Input components using this pattern to help with implementation of 
 This modules helps you achieve this
 
 ```tsx
-import * as React from "react";
+import * as React from "react"
 
 interface ISimpleData {
-  age: number;
-  password: string;
-  username: string;
+  age: number
+  password: string
+  username: string
 }
 class SimpleComponent extends React.Component<{
-  onChange: (newData: ISimpleData) => void;
-  age: number;
-  password: string;
-  username: string;
+  onChange: (newData: ISimpleData) => void
+  age: number
+  password: string
+  username: string
 }> {
   data = {
     age: this.props.age,
     password: this.props.password,
-    username: this.props.username
-  };
+    username: this.props.username,
+  }
   onChangeAge = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.data.age = parseInt(ev.target.value);
-    this.props.onChange(this.data);
-  };
+    this.data.age = parseInt(ev.target.value)
+    this.props.onChange(this.data)
+  }
   onChangePassword = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.data.password = ev.target.value;
-    this.props.onChange(this.data);
-  };
+    this.data.password = ev.target.value
+    this.props.onChange(this.data)
+  }
   onChangeUsername = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.data.username = ev.target.value;
-    this.props.onChange(this.data);
-  };
+    this.data.username = ev.target.value
+    this.props.onChange(this.data)
+  }
   render() {
     return (
       <form>
-        <input
-          onChange={this.onChangeUsername}
-          defaultValue={this.props.username}
-        />
+        <input onChange={this.onChangeUsername} defaultValue={this.props.username} />
         <input
           onChange={this.onChangePassword}
           type="password"
           defaultValue={this.props.password}
         />
-        <input
-          onChange={this.onChangeAge}
-          type="number"
-          defaultValue={this.props.age.toString()}
-        />
+        <input onChange={this.onChangeAge} type="number" defaultValue={this.props.age.toString()} />
       </form>
-    );
+    )
   }
 }
 ```
@@ -70,16 +63,12 @@ class SimpleComponent extends React.Component<{
 with much less code and same performance:
 
 ```tsx
-import {
-  UniformComponent,
-  UniformInput,
-  UniformInputNumber
-} from "uniform-react-components";
+import { UniformComponent, UniformInput, UniformInputNumber } from "uniform-react-components"
 
 interface ISimpleData {
-  age: number;
-  password: string;
-  username: string;
+  age: number
+  password: string
+  username: string
 }
 class SimpleUniform extends UniformComponent<ISimpleData> {
   render() {
@@ -100,7 +89,7 @@ class SimpleUniform extends UniformComponent<ISimpleData> {
           defaultValue={this.props.defaultValue.age}
         />
       </form>
-    );
+    )
   }
 }
 ```
@@ -150,9 +139,9 @@ For example, for this type
 
 ```ts
 interface ISimpleData {
-  age: number;
-  password: string;
-  username: string;
+  age: number
+  password: string
+  username: string
 }
 ```
 
@@ -168,17 +157,17 @@ this.onChange = {
   },
   username: newUsername => {
     /* dispatch this.props.onChange({ ...previousData, username: newUsername })*/
-  }
-};
+  },
+}
 ```
 
 Full example:
 
 ```tsx
 interface ISimpleData {
-  age: number;
-  password: string;
-  username: string;
+  age: number
+  password: string
+  username: string
 }
 class SimpleUniform extends UniformComponent<ISimpleData> {
   render() {
@@ -199,7 +188,7 @@ class SimpleUniform extends UniformComponent<ISimpleData> {
           defaultValue={this.props.defaultValue.age}
         />
       </form>
-    );
+    )
   }
 }
 ```
