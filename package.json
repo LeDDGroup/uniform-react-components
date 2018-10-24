@@ -58,7 +58,6 @@
     "@types/jest": "^23.3.1",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
-    "dynamic-on-change": "^1.0.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "husky": "^1.1.2",
@@ -79,5 +78,7 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "dynamic-on-change": "^1.0.0"
+  }
 }
