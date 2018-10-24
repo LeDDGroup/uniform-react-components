@@ -17,4 +17,8 @@ describe("<UniformInputNumber>", () => {
     input.simulate("change", { target: { value: "6" } })
     expect(changed).toBe(6)
   })
+  it("should allow ommitting property onChange", () => {
+    const wrapper = mount(<UniformInputNumber defaultValue={3} />)
+    wrapper.find("input").simulate("change", { target: { value: "6" } })
+  })
 })

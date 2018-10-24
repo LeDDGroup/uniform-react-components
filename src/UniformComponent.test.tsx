@@ -22,4 +22,18 @@ describe("<UniformComponent>", () => {
     input.simulate("change", { target: { value: "foo" } })
     expect(changed).toMatchObject({ bar: "foo" })
   })
+  it("should allow ommiting onChange property", () => {
+    class TestUniformComponent extends UniformComponent<{
+      bar: string
+    }> {
+      render() {
+        return <input onChange={ev => this.onChange.bar(ev.target.value)} type="string" />
+      }
+    }
+
+    const defaultValue = { bar: "hello" }
+    const wrapper = mount(<TestUniformComponent defaultValue={defaultValue} />)
+    const input = wrapper.find("input")
+    input.simulate("change", { target: { value: "foo" } })
+  })
 })

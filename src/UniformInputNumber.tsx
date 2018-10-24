@@ -11,7 +11,9 @@ export class UniformInputNumber extends React.Component<
   >
 > {
   private _UniformInputOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onChange(parseInt(ev.target.value, 10))
+    if (this.props.onChange) {
+      this.props.onChange(parseInt(ev.target.value, 10))
+    }
   }
   render() {
     return (
