@@ -11,82 +11,64 @@ Components with the same simple interface to handle onChange events on react com
 
 Also exports Input components using this pattern to help with implementation of forms and such
 
-This modules helps you achieve this
+# Example
 
 ```tsx
-import * as React from "react"
+import { UniformComponent, UniformInput, UniformInputNumber } from "uniform-react-components"
 
-interface ISimpleData {
-  age: number
-  password: string
-  username: string
-}
-class SimpleComponent extends React.Component<{
-  onChange: (newData: ISimpleData) => void
-  age: number
-  password: string
-  username: string
-}> {
-  data = {
-    age: this.props.age,
-    password: this.props.password,
-    username: this.props.username,
-  }
-  onChangeAge = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.data.age = parseInt(ev.target.value)
-    this.props.onChange(this.data)
-  }
-  onChangePassword = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.data.password = ev.target.value
-    this.props.onChange(this.data)
-  }
-  onChangeUsername = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.data.username = ev.target.value
-    this.props.onChange(this.data)
-  }
+class Form extends UniformComponent<{ name: string; age: number }, { showHeader?: boolean }> {
   render() {
     return (
       <form>
-        <input onChange={this.onChangeUsername} defaultValue={this.props.username} />
-        <input
-          onChange={this.onChangePassword}
-          type="password"
-          defaultValue={this.props.password}
+        {this.props.showHeader && <h1> Hello Form </h1>}
+        <UniformInput defaultValue={this.props.defaultValue.name} onChange={this.onChange.name} />
+        <UniformInputNumber
+          defaultValue={this.props.defaultValue.age}
+          onChange={this.onChange.age}
         />
-        <input onChange={this.onChangeAge} type="number" defaultValue={this.props.age.toString()} />
       </form>
     )
   }
 }
 ```
 
-with much less code and same performance:
+It's equivalent to:
 
 ```tsx
-import { UniformComponent, UniformInput, UniformInputNumber } from "uniform-react-components"
+import * as React from "react"
 
 interface ISimpleData {
   age: number
-  password: string
-  username: string
+  name: string
 }
-class SimpleUniform extends UniformComponent<ISimpleData> {
+class SimpleComponent extends React.Component<{
+  onChange: (newData: ISimpleData) => void
+  defaultValue: {
+    age: number
+    name: string
+  }
+  showHeader?: boolean
+}> {
+  data = {
+    age: this.props.age,
+    name: this.props.name,
+  }
+  onChangeAge = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    this.data.age = parseInt(ev.target.value)
+    this.props.onChange(this.data)
+  }
+  onChangeName = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    this.data.name = ev.target.value
+    this.props.onChange(this.data)
+  }
   render() {
     return (
       <form>
-        <UniformInput
-          onChange={this.onChange.username}
-          defaultValue={this.props.defaultValue.username}
-        />
-        <UniformInput
-          type="password"
-          onChange={this.onChange.password}
-          defaultValue={this.props.defaultValue.password}
-        />
-        <UniformInputNumber
+        <input onChange={this.onChangeName} defaultValue={this.props.defaultValue.name} />
+        <input
+          onChange={this.onChangeAge}
           type="number"
-          onChange={this.onChange.age}
-          defaultValue={this.props.defaultValue.age}
+          defaultValue={this.props.defaultValue.age.toString()}
         />
       </form>
     )
@@ -99,35 +81,6 @@ class SimpleUniform extends UniformComponent<ISimpleData> {
 - Generate efficient onChange handlers, so you don't have to make every one of them manually
 - Easy form creation with components with the same interface
 - Great typescript support
-
-## Input helpers
-
-uniform-react-components exports two input helpers ( _UniformInput_ and _UniformInputNumber_ )that have the same interface, it only changes the _onChange_ ( and _defaultValue_ which is the case of _UniformInputNumber_ ) properties, and accepts all the properties of a plain `input` element. This only saves you the trouble of implementing these components, but you could implement them if you want to, and even add some more.
-
-### UniformInput
-
-The same as the plain input element, but the onChange property returns an string instead of a change input event
-
-```tsx
-<UniformInput
-  onChange={newValue => console.log(`This is my value ${newValue}`)} // newValue is string
-  defaultValue="hello"
-  // you can add all the other properties such as type, className, style...
-/>
-```
-
-### UniformInputNumber
-
-The same as the plain input element, but the onChange property returns an _number_ instead of a change input event, and the defaultValue accepts an number too. You must still set the `type="number"` property if you want a number input
-
-```tsx
-<UniformInputNumber
-  onChange={newValue => console.log(`This is my value ${newValue}`)} // newValue is number
-  defaultValue={3} // typescript complains if it's string
-  type="number"
-  // you can add all the other properties such as className, style...
-/>
-```
 
 ## UniformComponent
 
@@ -191,4 +144,33 @@ class SimpleUniform extends UniformComponent<ISimpleData> {
     )
   }
 }
+```
+
+## Input helpers
+
+uniform-react-components exports two input helpers ( _UniformInput_ and _UniformInputNumber_ )that have the same interface, it only changes the _onChange_ ( and _defaultValue_ which is the case of _UniformInputNumber_ ) properties, and accepts all the properties of a plain `input` element. This only saves you the trouble of implementing these components, but you could implement them if you want to, and even add some more.
+
+### UniformInput
+
+The same as the plain input element, but the onChange property returns an string instead of a change input event
+
+```tsx
+<UniformInput
+  onChange={newValue => console.log(`This is my value ${newValue}`)} // newValue is string
+  defaultValue="hello"
+  // you can add all the other properties such as type, className, style...
+/>
+```
+
+### UniformInputNumber
+
+The same as the plain input element, but the onChange property returns an _number_ instead of a change input event, and the defaultValue accepts an number too. You must still set the `type="number"` property if you want a number input
+
+```tsx
+<UniformInputNumber
+  onChange={newValue => console.log(`This is my value ${newValue}`)} // newValue is number
+  defaultValue={3} // typescript complains if it's string
+  type="number"
+  // you can add all the other properties such as className, style...
+/>
 ```
