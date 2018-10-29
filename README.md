@@ -9,9 +9,9 @@
 
 Components with the same simple interface to handle onChange events on react components
 
-Also exports Input components using this pattern to help with implementation of forms and such
+Also exports Input and Select components using this pattern to help with implementation of forms and such
 
-# Example
+## Example
 
 ```tsx
 import { UniformComponent, UniformInput, UniformInputNumber } from "uniform-react-components"
@@ -146,9 +146,9 @@ class SimpleUniform extends UniformComponent<ISimpleData> {
 }
 ```
 
-## Input helpers
+## Built-in helpers
 
-uniform-react-components exports two input helpers ( _UniformInput_ and _UniformInputNumber_ )that have the same interface, it only changes the _onChange_ ( and _defaultValue_ which is the case of _UniformInputNumber_ ) properties, and accepts all the properties of a plain `input` element. This only saves you the trouble of implementing these components, but you could implement them if you want to, and even add some more.
+uniform-react-components exports two input helpers ( _UniformInput_ and _UniformInputNumber_ ) and a select helper that have the same interface, it only changes the _onChange_ ( and _defaultValue_ which is the case of _UniformInputNumber_ ) properties, and accepts all the properties of a plain `input` element. This only saves you the trouble of implementing these components, but you could implement them if you want to, and even add some more.
 
 ### UniformInput
 
@@ -174,3 +174,25 @@ The same as the plain input element, but the onChange property returns an _numbe
   // you can add all the other properties such as className, style...
 />
 ```
+
+### UniformSelect
+
+```tsx
+import { UniformSelect, UniformOptionProps } from "./index"
+    type MaleOrFemale = "male" | "female"
+    const options: UniformOptionProps<MaleOrFemale>[] = [
+      {
+        value: "male",
+        children: "Male",
+      },
+      {
+        value: "female",
+        children: "Female",
+      },
+    ]
+    let changed: MaleOrFemale | null = null
+    const el = <UniformSelect options={options} onChange={(newValue) => console.log(newValue)} defaultValue={"male"} />, // newValue is MaleOrFemale
+/>
+```
+
+The options is an array of Options, which has all the properties the option element takes, but value is restricted to the specified type, so it enforces type safety

@@ -25,7 +25,8 @@
     "typescript": true,
     "react": true,
     "rules": {
-      "no-console": "on"
+      "no-console": "on",
+      "jsx-no-multiline-js": "off"
     }
   },
   "jest": {
@@ -74,8 +75,7 @@
     "semantic-release": "^15.10.5",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^23.1.4",
-    "typescript": "^3.0.3",
-    "utility-types": "^2.1.0"
+    "typescript": "^3.0.3"
   },
   "peerDependencies": {
     "react": "^16.5.2",

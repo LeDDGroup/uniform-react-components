@@ -1,6 +1,6 @@
 import * as React from "react"
 import { UniformProps } from "./UniformComponent"
-import { Omit } from "utility-types"
+import { Omit } from "./type-helpers"
 
 export class UniformInput extends React.Component<
   UniformProps<string, Omit<JSX.IntrinsicElements["input"], "onChange">>

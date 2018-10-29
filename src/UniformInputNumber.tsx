@@ -1,6 +1,6 @@
 import * as React from "react"
 import { UniformProps } from "./UniformComponent"
-import { Omit } from "utility-types"
+import { Omit } from "./type-helpers"
 
 export class UniformInputNumber extends React.Component<
   UniformProps<
