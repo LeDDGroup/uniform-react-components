@@ -14,10 +14,10 @@ export class UniformSelect<T extends string> extends UniformComponent<
     }
   }
   render() {
+    const { options, ...rest } = this.props
     return (
-      <select onChange={this._UniformSelectOnChange}>
-        {this.props.options &&
-          this.props.options.map(prop => <option {...prop} key={prop.value} />)}
+      <select {...rest} onChange={this._UniformSelectOnChange}>
+        {options && options.map(prop => <option {...prop} key={prop.value} />)}
       </select>
     )
   }
