@@ -21,7 +21,7 @@ describe("<UniformSelect>", () => {
       <UniformSelect
         options={options}
         onChange={newValue => (changed = newValue)}
-        defaultValue={"male"}
+        value={"male"}
       />,
     )
     const input = wrapper.find("select")

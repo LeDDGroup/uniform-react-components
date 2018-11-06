@@ -16,18 +16,9 @@ it("should work together", () => {
     render() {
       return (
         <form>
-          <UniformInput
-            onChange={this.onChange.firstName}
-            defaultValue={this.props.defaultValue.firstName}
-          />
-          <UniformInput
-            onChange={this.onChange.lastName}
-            defaultValue={this.props.defaultValue.lastName}
-          />
-          <UniformInputNumber
-            onChange={this.onChange.age}
-            defaultValue={this.props.defaultValue.age}
-          />
+          <UniformInput onChange={this.onChange.firstName} value={this.props.value.firstName} />
+          <UniformInput onChange={this.onChange.lastName} value={this.props.value.lastName} />
+          <UniformInputNumber onChange={this.onChange.age} value={this.props.value.age} />
         </form>
       )
     }
@@ -37,9 +28,7 @@ it("should work together", () => {
     firstName: "foo",
     lastName: "bar",
   }
-  const wrapper = mount(
-    <SimpleUniform onChange={value => (update = value)} defaultValue={update} />,
-  )
+  const wrapper = mount(<SimpleUniform onChange={value => (update = value)} value={update} />)
   const inputs = wrapper.find("input")
   inputs.at(0).simulate("change", { target: { value: "my-firstname" } })
   expect(update).toMatchObject({

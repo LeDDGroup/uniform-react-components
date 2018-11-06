@@ -6,6 +6,7 @@ export class UniformInputNumber extends React.Component<
   SafeJoin<
     SafeJoin<JSX.IntrinsicElements["input"], UniformProps<number>>,
     {
+      value?: number
       defaultValue?: number
     }
   >
@@ -16,10 +17,13 @@ export class UniformInputNumber extends React.Component<
     }
   }
   render() {
-    const defaultValue =
-      this.props.defaultValue === undefined ? "0" : this.props.defaultValue.toString()
-    return (
-      <input {...this.props} onChange={this._UniformInputOnChange} defaultValue={defaultValue} />
-    )
+    const props = {
+      ...this.props,
+      ...(this.props.value === undefined ? {} : { value: this.props.value.toString() }),
+      ...(this.props.defaultValue === undefined
+        ? {}
+        : { defaultValue: this.props.defaultValue.toString() }),
+    } as any
+    return <input {...props} onChange={this._UniformInputOnChange} />
   }
 }

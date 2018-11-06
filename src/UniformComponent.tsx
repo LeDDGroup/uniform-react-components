@@ -3,7 +3,8 @@ import { dynamicOnChange } from "dynamic-on-change"
 
 export type UniformProps<D, P = {}> = {
   onChange?: (newValue: D) => void
-  defaultValue: D
+  value: D
+  defaultValue?: D // DEPRECATED
 } & P
 
 export class UniformComponent<D, P = {}, S = {}, SS = any> extends Component<
@@ -11,7 +12,7 @@ export class UniformComponent<D, P = {}, S = {}, SS = any> extends Component<
   S,
   SS
 > {
-  private _UniformData: D = this.props.defaultValue
+  private _UniformData: D = this.props.value
   private _UniformOnChange = (key: keyof D, value: D[keyof D]) => {
     this._UniformData[key] = value
     if (this.props.onChange) {

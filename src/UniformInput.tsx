@@ -6,6 +6,7 @@ export class UniformInput extends React.Component<
   SafeJoin<
     SafeJoin<JSX.IntrinsicElements["input"], UniformProps<string>>,
     {
+      value?: string
       defaultValue?: string
     }
   >

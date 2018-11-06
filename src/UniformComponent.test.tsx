@@ -13,7 +13,7 @@ describe("<UniformComponent>", () => {
     const defaultValue = { bar: "hello" }
     let changed: null | { bar: string } = null
     const wrapper = mount(
-      <TestUniformComponent onChange={value => (changed = value)} defaultValue={defaultValue} />,
+      <TestUniformComponent onChange={value => (changed = value)} value={defaultValue} />,
     )
     const input = wrapper.find("input")
     input.simulate("change", { target: { value: "foo" } })
@@ -21,7 +21,7 @@ describe("<UniformComponent>", () => {
   })
   it("should allow ommiting onChange property", () => {
     const defaultValue = { bar: "hello" }
-    const wrapper = mount(<TestUniformComponent defaultValue={defaultValue} />)
+    const wrapper = mount(<TestUniformComponent value={defaultValue} />)
     const input = wrapper.find("input")
     input.simulate("change", { target: { value: "foo" } })
   })
