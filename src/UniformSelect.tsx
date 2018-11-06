@@ -1,8 +1,8 @@
 import * as React from "react"
 import { UniformComponent } from "./UniformComponent"
-import { Omit } from "./type-helpers"
+import { SafeJoin, Omit } from "./type-helpers"
 
-export type UniformOptionProps<T> = Omit<JSX.IntrinsicElements["option"], "value"> & { value: T }
+export type UniformOptionProps<T> = SafeJoin<JSX.IntrinsicElements["option"], { value: T }>
 
 export class UniformSelect<T extends string> extends UniformComponent<
   T,

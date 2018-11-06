@@ -1,7 +1,7 @@
 import { Component } from "react"
 import { dynamicOnChange } from "dynamic-on-change"
 
-export type UniformProps<D, P> = {
+export type UniformProps<D, P = {}> = {
   onChange?: (newValue: D) => void
   defaultValue: D
 } & P

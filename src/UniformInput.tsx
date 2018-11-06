@@ -1,9 +1,14 @@
 import * as React from "react"
 import { UniformProps } from "./UniformComponent"
-import { Omit } from "./type-helpers"
+import { SafeJoin } from "./type-helpers"
 
 export class UniformInput extends React.Component<
-  UniformProps<string, Omit<JSX.IntrinsicElements["input"], "onChange">>
+  SafeJoin<
+    SafeJoin<JSX.IntrinsicElements["input"], UniformProps<string>>,
+    {
+      defaultValue?: string
+    }
+  >
 > {
   private _UniformInputOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (this.props.onChange) {

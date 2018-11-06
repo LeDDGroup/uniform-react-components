@@ -17,4 +17,8 @@ describe("<UniformInput>", () => {
     const wrapper = mount(<UniformInput defaultValue="3" />)
     wrapper.find("input").simulate("change", { target: { value: "foo" } })
   })
+  it("should allow ommitting property defaultValue", () => {
+    const wrapper = mount(<UniformInput />)
+    wrapper.find("input").simulate("change", { target: { value: "foo" } })
+  })
 })

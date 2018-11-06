@@ -1,12 +1,12 @@
 import * as React from "react"
 import { UniformProps } from "./UniformComponent"
-import { Omit } from "./type-helpers"
+import { SafeJoin } from "./type-helpers"
 
 export class UniformInputNumber extends React.Component<
-  UniformProps<
-    number,
-    Omit<JSX.IntrinsicElements["input"], "onChange" | "defaultValue"> & {
-      defaultValue: number
+  SafeJoin<
+    SafeJoin<JSX.IntrinsicElements["input"], UniformProps<number>>,
+    {
+      defaultValue?: number
     }
   >
 > {
@@ -16,12 +16,10 @@ export class UniformInputNumber extends React.Component<
     }
   }
   render() {
+    const defaultValue =
+      this.props.defaultValue === undefined ? "0" : this.props.defaultValue.toString()
     return (
-      <input
-        {...this.props}
-        onChange={this._UniformInputOnChange}
-        defaultValue={this.props.defaultValue.toString()}
-      />
+      <input {...this.props} onChange={this._UniformInputOnChange} defaultValue={defaultValue} />
     )
   }
 }
