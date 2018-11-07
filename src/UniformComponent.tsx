@@ -13,11 +13,13 @@ export class UniformComponent<D, P = {}, S = {}, SS = any> extends Component<
   SS
 > {
   private _UniformData: D = this.props.value
-  private _UniformOnChange = (key: keyof D, value: D[keyof D]) => {
+  public componentDidUpdate() {
+    this._UniformData = this.props.value
+  }
+  protected onChange = dynamicOnChange<D>((key, value) => {
     this._UniformData[key] = value
     if (this.props.onChange) {
       this.props.onChange(this._UniformData)
     }
-  }
-  protected onChange = dynamicOnChange<D>(this._UniformOnChange)
+  })
 }
