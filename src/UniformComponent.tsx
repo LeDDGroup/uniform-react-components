@@ -1,5 +1,6 @@
 import { Component } from "react"
-import { dynamicOnChange } from "dynamic-on-change"
+import { HandleDataChange } from "handle-data-change"
+import { dynamicOnChanges } from "dynamic-on-change"
 
 export type UniformProps<D, P = {}> = {
   onChange?: (newValue: D) => void
@@ -12,12 +13,10 @@ export class UniformComponent<D, P = {}, S = {}, SS = any> extends Component<
   S,
   SS
 > {
-  private _UniformData: D = this.props.value
-  private _UniformOnChange = (key: keyof D, value: D[keyof D]) => {
-    this._UniformData[key] = value
-    if (this.props.onChange) {
-      this.props.onChange(this._UniformData)
-    }
+  constructor(props: UniformProps<D, P>) {
+    super(props)
+    const data = new HandleDataChange(props.value, data => props.onChange && props.onChange(data))
+    this.onChange = data.change
   }
-  protected onChange = dynamicOnChange<D>(this._UniformOnChange)
+  protected onChange: dynamicOnChanges<D>
 }
