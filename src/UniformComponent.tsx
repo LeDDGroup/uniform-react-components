@@ -1,22 +1,25 @@
-import { Component } from "react"
-import { HandleDataChange } from "handle-data-change"
-import { dynamicOnChanges } from "dynamic-on-change"
+import React, { ComponentClass /* useState  */ } from "react"
+import Data from "handle-data-change"
 
-export type UniformProps<D, P = {}> = {
+export interface IData<D> {
   onChange?: (newValue: D) => void
   value: D
   defaultValue?: D // DEPRECATED
-} & P
+}
 
-export class UniformComponent<D, P = {}, S = {}, SS = any> extends Component<
-  UniformProps<D, P>,
-  S,
-  SS
-> {
-  constructor(props: UniformProps<D, P>) {
-    super(props)
-    const data = new HandleDataChange(props.value, data => props.onChange && props.onChange(data))
-    this.onChange = data.change
+export type UniformProps<D, P = {}> = IData<D> & P
+
+export interface UniformChildProps<D> {
+  data: Data<D>
+}
+
+export function UniformComponent<D, H>(Component: ComponentClass<UniformChildProps<D> & H>) {
+  let onChangeFunction: (data: D) => void = () => null
+  const data = new Data<D>({} as D, (data: D) => onChangeFunction(data))
+  return function<H>(props: UniformProps<D> & H) {
+    const { onChange, value, defaultValue, ...rest } = props as any
+    data.value = value || defaultValue
+    onChangeFunction = onChange
+    return <Component {...rest} data={data} />
   }
-  protected onChange: dynamicOnChanges<D>
 }

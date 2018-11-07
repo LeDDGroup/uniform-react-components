@@ -1,19 +1,20 @@
 // tslint:disable:jsx-no-lambda
 import * as React from "react"
 import { mount } from "enzyme"
-import { UniformComponent } from "./index"
+import { UniformComponent, UniformChildProps } from "./index"
 
 describe("<UniformComponent>", () => {
-  class TestUniformComponent extends UniformComponent<{ bar: string }> {
+  class TestUniformComponent extends React.Component<UniformChildProps<{ bar: string }>> {
     render() {
-      return <input onChange={ev => this.onChange.bar(ev.target.value)} type="string" />
+      return <input onChange={ev => this.props.data.change.bar(ev.target.value)} type="string" />
     }
   }
+  const UniformTestComponent = UniformComponent(TestUniformComponent)
   it("should dispatch change event", () => {
     const defaultValue = { bar: "hello" }
     let changed: null | { bar: string } = null
     const wrapper = mount(
-      <TestUniformComponent onChange={value => (changed = value)} value={defaultValue} />,
+      <UniformTestComponent onChange={value => (changed = value)} value={defaultValue} />,
     )
     const input = wrapper.find("input")
     input.simulate("change", { target: { value: "foo" } })
@@ -21,7 +22,7 @@ describe("<UniformComponent>", () => {
   })
   it("should allow ommiting onChange property", () => {
     const defaultValue = { bar: "hello" }
-    const wrapper = mount(<TestUniformComponent value={defaultValue} />)
+    const wrapper = mount(<UniformTestComponent value={defaultValue} onChange={() => null} />)
     const input = wrapper.find("input")
     input.simulate("change", { target: { value: "foo" } })
   })
