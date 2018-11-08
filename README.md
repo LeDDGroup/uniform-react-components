@@ -7,74 +7,9 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![linter: lynt](https://img.shields.io/badge/linter-lynt-E81AAF.svg)](https://github.com/saadq/lynt)
 
-Components with the same simple interface to handle onChange events on react components
+HOC for creating components with the same simple interface to handle onChange events on react components
 
 Also exports Input and Select components using this pattern to help with implementation of forms and such
-
-## Example
-
-```tsx
-import { UniformComponent, UniformInput, UniformInputNumber } from "uniform-react-components"
-
-class Form extends UniformComponent<{ name: string; age: number }, { showHeader?: boolean }> {
-  render() {
-    return (
-      <form>
-        {this.props.showHeader && <h1> Hello Form </h1>}
-        <UniformInput defaultValue={this.props.defaultValue.name} onChange={this.onChange.name} />
-        <UniformInputNumber
-          defaultValue={this.props.defaultValue.age}
-          onChange={this.onChange.age}
-        />
-      </form>
-    )
-  }
-}
-```
-
-It's equivalent to:
-
-```tsx
-import * as React from "react"
-
-interface ISimpleData {
-  age: number
-  name: string
-}
-class SimpleComponent extends React.Component<{
-  onChange: (newData: ISimpleData) => void
-  defaultValue: {
-    age: number
-    name: string
-  }
-  showHeader?: boolean
-}> {
-  data = {
-    age: this.props.age,
-    name: this.props.name,
-  }
-  onChangeAge = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.data.age = parseInt(ev.target.value)
-    this.props.onChange(this.data)
-  }
-  onChangeName = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    this.data.name = ev.target.value
-    this.props.onChange(this.data)
-  }
-  render() {
-    return (
-      <form>
-        <input onChange={this.onChangeName} defaultValue={this.props.defaultValue.name} />
-        <input
-          onChange={this.onChangeAge}
-          type="number"
-          defaultValue={this.props.defaultValue.age.toString()}
-        />
-      </form>
-    )
-  }
-}
-```
 
 ## Features
 
@@ -82,11 +17,63 @@ class SimpleComponent extends React.Component<{
 - Easy form creation with components with the same interface
 - Great typescript support
 
+## Usage
+
+### For a class component
+
+```tsx
+import { UniformComponent, UniformProps } from "uniform-react-components"
+
+const MyUniformComponent = UniformComponent(
+  class MyComponent extends React.Component<UniformProps<{ foo: string }, { customProp: string }>> {
+    render() {
+      return (
+        <div>
+          Custom prop: {this.props.customProp}
+          <input
+            name={this.props.data.path.foo.join(".")}
+            type="text"
+            value={this.props.data.value.foo || "undef"}
+          />
+        </div>
+      )
+    }
+  },
+)
+```
+
+### For a SFC (stateless functional component)
+
+```tsx
+import { UniformComponent, UniformProps } from "uniform-react-components"
+
+const MyUniformComponent = UniformComponent(
+  (props: UniformProps<{ foo: string }, { customProp: string }>) => (
+    <div>
+      Custom prop: {props.customProp}
+      <input
+        name={props.data.path.foo.join(".")}
+        type="text"
+        value={props.data.value.foo || "undef"}
+      />
+    </div>
+  ),
+)
+```
+
 ## UniformComponent
 
-The UniformComponent is the main component of uniform-react-components, it's a base class which is used to make simple components for handling forms and subforms, or anything that holds a value and can be changed.
+The UniformComponent is the main component of uniform-react-components, it's a HOC which is used to make simple components for handling forms and subforms, or anything that holds a value and can be changed.
 
-All UniformComponent exports the same interface `{ onChange: Data; defaultValue: Data }`, where Data is a type of the value the component holds. The component will have a member predefined with the onChange handlers of all the possible keys of the Data type.
+All components created with 'UniformComponent' receive the props specified, plus a `data` which holds this helpers:
+
+```ts
+interface IData {
+  path
+  value
+  onChange
+}
+```
 
 For example, for this type
 
@@ -98,18 +85,30 @@ interface ISimpleData {
 }
 ```
 
-The component will generate handlers like if you did:
+The component will receive in the `props.data` handlers like if you did:
 
 ```tsx
-this.onChange = {
-  age: newAge => {
-    /* dispatch this.props.onChange({ ...previousData, age: newAge })*/
+props.data = {
+  value: {
+    age: 3,
+    password: "myPassword",
+    username: "myUsername",
   },
-  password: newPassword => {
-    /* dispatch this.props.onChange({ ...previousData, password: newPassword })*/
+  change: {
+    age: newAge => {
+      /* dispatch this.props.onChange({ ...previousData, age: newAge })*/
+    },
+    password: newPassword => {
+      /* dispatch this.props.onChange({ ...previousData, password: newPassword })*/
+    },
+    username: newUsername => {
+      /* dispatch this.props.onChange({ ...previousData, username: newUsername })*/
+    },
   },
-  username: newUsername => {
-    /* dispatch this.props.onChange({ ...previousData, username: newUsername })*/
+  path: {
+    age: ["previousPath", "otherPreviousPath", "age"],
+    password: ["previousPath", "otherPreviousPath", "password"],
+    username: ["previousPath", "otherPreviousPath", "username"],
   },
 }
 ```
@@ -117,34 +116,52 @@ this.onChange = {
 Full example:
 
 ```tsx
-interface ISimpleData {
-  age: number
-  password: string
-  username: string
+interface IData {
+  foo?: string
+  bar: number
 }
-class SimpleUniform extends UniformComponent<ISimpleData> {
-  render() {
-    return (
-      <form>
-        <UniformInput
-          onChange={this.onChange.username}
-          defaultValue={this.props.defaultValue.username}
-        />
-        <UniformInput
-          type="password"
-          onChange={this.onChange.password}
-          defaultValue={this.props.defaultValue.password}
-        />
-        <UniformInputNumber
-          type="number"
-          onChange={this.onChange.age}
-          defaultValue={this.props.defaultValue.age}
-        />
-      </form>
-    )
-  }
+
+interface IProps {
+  hidden?: boolean
 }
+
+const MyUniformComponent = UniformComponent(
+  class MyComponent extends React.Component<UniformProps<IData, IProps>> {
+    render() {
+      return (
+        <div>
+          {this.props.hidden ? "is hidden" : "is visible"}
+          <input
+            name={this.props.data.path.foo.join(".")}
+            type="text"
+            value={this.props.data.value.foo || "undef"}
+          />
+          <input
+            name={this.props.data.path.bar.join(".")}
+            type="text"
+            value={this.props.data.value.bar}
+          />
+        </div>
+      )
+    }
+  },
+)
+
+const MyUniForm = UniformComponent((props: UniformProps<{ a: IData; b: IData }>) => (
+  <form action="">
+    <MyUniformComponent value={props.data.value.a} />
+    <MyUniformComponent hidden={true} value={props.data.value.b} />
+  </form>
+))
 ```
+
+Then mount `MyUniForm` component:
+
+```tsx
+  <MyUniForm onChange={(data) => console.log(data} value={{a: { bar: 3}, b: { bar: 5}}} />
+```
+
+and every time the user types in the inputs, it will be outputted the value
 
 ## Built-in helpers
 
