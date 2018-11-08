@@ -1,10 +1,10 @@
 // tslint:disable:jsx-no-lambda
 import * as React from "react"
 import { mount } from "enzyme"
-import { UniformComponent, UniformChildProps } from "./index"
+import { UniformComponent, UniformProps } from "./index"
 
 describe("<UniformComponent>", () => {
-  class TestUniformComponent extends React.Component<UniformChildProps<{ bar: string }>> {
+  class TestUniformComponent extends React.Component<UniformProps<{ bar: string }>> {
     render() {
       return <input onChange={ev => this.props.data.change.bar(ev.target.value)} type="string" />
     }

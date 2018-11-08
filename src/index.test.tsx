@@ -1,7 +1,7 @@
 // tslint:disable:jsx-no-lambda
 import * as React from "react"
 import { mount, configure } from "enzyme"
-import { UniformChildProps, UniformInput, UniformInputNumber } from "./index"
+import { UniformProps, UniformInput, UniformInputNumber } from "./index"
 import Adapter from "enzyme-adapter-react-16"
 import { UniformComponent } from "./UniformComponent"
 
@@ -13,7 +13,7 @@ it("should work together", () => {
     firstName: string
     lastName: string
   }
-  class SimpleUniform extends React.Component<UniformChildProps<ISimpleData>> {
+  class SimpleUniform extends React.Component<UniformProps<ISimpleData>> {
     render() {
       return (
         <form>

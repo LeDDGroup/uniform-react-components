@@ -1,10 +1,10 @@
 import * as React from "react"
-import { UniformProps } from "./UniformComponent"
+import { IProps } from "./UniformComponent"
 import { SafeJoin } from "./type-helpers"
 
 export class UniformInput extends React.Component<
   SafeJoin<
-    SafeJoin<JSX.IntrinsicElements["input"], UniformProps<string>>,
+    SafeJoin<JSX.IntrinsicElements["input"], IProps<string>>,
     {
       value?: string
       defaultValue?: string
