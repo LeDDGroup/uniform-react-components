@@ -213,7 +213,3 @@ import { UniformSelect, UniformOptionProps } from "./index"
 ```
 
 The options is an array of Options, which has all the properties the option element takes, but value is restricted to the specified type, so it enforces type safety
-
-## Note
-
-You shouldn't use `componentDidUpdate` with UniformComponent because UniformComponent use it for handling props change, there are workarounds for this issue though.
