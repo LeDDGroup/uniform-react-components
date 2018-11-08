@@ -1,8 +1,13 @@
 import * as React from "react"
-import { IProps } from "./UniformComponent"
 import { SafeJoin, Omit } from "./type-helpers"
 
 export type UniformOptionProps<T> = SafeJoin<JSX.IntrinsicElements["option"], { value: T }>
+
+type IProps<D, P = {}> = {
+  value: D
+  onChange?: (newValue: D) => void
+  path?: string[]
+} & P
 
 export class UniformSelect<T extends string> extends React.Component<
   IProps<
