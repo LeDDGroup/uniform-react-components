@@ -1,25 +1,37 @@
-import { Component } from "react"
-import { dynamicOnChange } from "dynamic-on-change"
+import React, { ComponentClass, SFC } from "react"
+import Data, { IData } from "handle-data-change"
 
-export type UniformProps<D, P = {}> = {
-  onChange?: (newValue: D) => void
+export { IData }
+
+export type IProps<D, P = {}> = {
   value: D
-  defaultValue?: D // DEPRECATED
+  onChange?: (newValue: D) => void
+  path?: string[]
 } & P
 
-export class UniformComponent<D, P = {}, S = {}, SS = any> extends Component<
-  UniformProps<D, P>,
-  S,
-  SS
-> {
-  private _UniformData: D = this.props.value
-  public componentDidUpdate() {
-    this._UniformData = this.props.value
-  }
-  protected onChange = dynamicOnChange<D>((key, value) => {
-    this._UniformData[key] = value
-    if (this.props.onChange) {
-      this.props.onChange(this._UniformData)
+export type UniformProps<D, P = {}> = {
+  data: IData<D>
+} & P
+
+function equal<T>(a: T, b: T) {
+  return a === b
+}
+
+export function UniformComponent<D, H>(
+  Component: ComponentClass<UniformProps<D, H>> | SFC<UniformProps<D, H>>,
+) {
+  let uniOnChange: (data: D) => void = () => null
+  let uniValue: D = {} as D
+  let uniPath: string[]
+  let data = new Data<D>({} as D, uniOnChange)
+  return function<H>(props: IProps<D> & H) {
+    const { onChange, value, defaultValue, path, ...rest } = props as any
+    if (!equal(onChange, uniOnChange) || !equal(value, uniValue) || !equal(path, uniPath)) {
+      uniOnChange = onChange
+      uniValue = value
+      uniPath = path
+      data = new Data(value, onChange, path)
     }
-  })
+    return <Component {...rest} data={data} />
+  }
 }
