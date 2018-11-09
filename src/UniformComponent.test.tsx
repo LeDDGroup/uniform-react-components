@@ -5,7 +5,7 @@ import { UniformComponent, UniformProps } from "./index"
 
 describe("<UniformComponent>", () => {
   class TestUniformComponent extends React.Component<
-    UniformProps<{ bar: string }, { asdf?: string }>
+    UniformProps<{ bar: string }> & { asdf?: string }
   > {
     render() {
       return <input onChange={ev => this.props.data.change.bar(ev.target.value)} type="string" />

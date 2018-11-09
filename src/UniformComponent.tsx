@@ -1,28 +1,30 @@
 import React, { ComponentClass, SFC } from "react"
 import Data, { IData } from "handle-data-change"
 
-export type IProps<D, P = {}> = {
+export interface IProps<D> {
   value: D
   onChange?: (newValue: D) => void
   path?: string[]
-} & (P | {})
+}
 
-export type UniformProps<D, P = {}> = {
+export interface UniformProps<D> {
   data: IData<D>
-} & (P | {})
+}
 
 function equal<T>(a: T, b: T) {
   return a === b
 }
 
-export function UniformComponent<D, H>(
-  Component: ComponentClass<UniformProps<D, H>> | SFC<UniformProps<D, H>>,
+type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
+
+export function UniformComponent<P extends UniformProps<any>, D = P["data"]["value"]>(
+  Component: ComponentClass<P> | SFC<P>,
 ) {
   let uniOnChange: (data: D) => void = () => null
   let uniValue: D = {} as D
   let uniPath: string[]
   let data = new Data<D>({} as D, uniOnChange)
-  return function(props: IProps<D, H>) {
+  return function(props: IProps<D> & Omit<P, "data">) {
     const { onChange, value, defaultValue, path, ...rest } = props as any
     if (!equal(onChange, uniOnChange) || !equal(value, uniValue) || !equal(path, uniPath)) {
       uniOnChange = onChange

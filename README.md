@@ -25,7 +25,9 @@ Also exports Input and Select components using this pattern to help with impleme
 import { UniformComponent, UniformProps } from "uniform-react-components"
 
 const MyUniformComponent = UniformComponent(
-  class MyComponent extends React.Component<UniformProps<{ foo: string }, { customProp: string }>> {
+  class MyComponent extends React.Component<
+    UniformProps<{ foo: string }> & { customProp: string }
+  > {
     render() {
       return (
         <div>
@@ -48,7 +50,7 @@ const MyUniformComponent = UniformComponent(
 import { UniformComponent, UniformProps } from "uniform-react-components"
 
 const MyUniformComponent = UniformComponent(
-  (props: UniformProps<{ foo: string }, { customProp: string }>) => (
+  (props: UniformProps<{ foo: string }> & { customProp: string }) => (
     <div>
       Custom prop: {props.customProp}
       <input
@@ -126,7 +128,7 @@ interface IProps {
 }
 
 const MyUniformComponent = UniformComponent(
-  class MyComponent extends React.Component<UniformProps<IData, IProps>> {
+  class MyComponent extends React.Component<UniformProps<IData> & IProps> {
     render() {
       return (
         <div>
