@@ -1,37 +1,27 @@
-import React, { ComponentClass, SFC } from "react"
-import Data, { IData } from "handle-data-change"
+import React from "react"
+import Data from "handle-data-change"
 
-export interface IProps<D> {
-  value: D
-  onChange?: (newValue: D) => void
+export interface IProps<D = {}> {
+  defaultValue: D
+  value?: D
+  onChange?: (value: D) => void
   path?: string[]
+  children: (data: Data<D>) => JSX.Element
 }
 
-export interface UniformProps<D> {
-  data: IData<D>
-}
-
-function equal<T>(a: T, b: T) {
-  return a === b
-}
-
-type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
-
-export function UniformComponent<P extends UniformProps<any>, D = P["data"]["value"]>(
-  Component: ComponentClass<P> | SFC<P>,
-) {
-  let uniOnChange: (data: D) => void = () => null
-  let uniValue: D = {} as D
-  let uniPath: string[]
-  let data = new Data<D>({} as D, uniOnChange)
-  return function(props: IProps<D> & Omit<P, "data">) {
-    const { onChange, value, defaultValue, path, ...rest } = props as any
-    if (!equal(onChange, uniOnChange) || !equal(value, uniValue) || !equal(path, uniPath)) {
-      uniOnChange = onChange
-      uniValue = value
-      uniPath = path
-      data = new Data(value, onChange, path)
-    }
-    return <Component {...rest} data={data} />
+export class UniformComponent<D> extends React.Component<IProps<D>, D> {
+  data = new Data(
+    this.props.value || this.props.defaultValue,
+    (data: D) => this.onChange(data),
+    this.props.path,
+  )
+  state = this.data.value
+  render() {
+    this.data.value = this.props.value || this.data.value
+    return this.props.children(this.data)
+  }
+  private onChange(value: D) {
+    this.setState(value)
+    this.props.onChange && this.props.onChange(value)
   }
 }

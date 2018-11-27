@@ -1,7 +1,7 @@
 // tslint:disable:jsx-no-lambda
 import * as React from "react"
 import { mount, configure } from "enzyme"
-import { UniformProps, UniformInput, UniformInputNumber } from "./index"
+import { UniformInput, UniformInputNumber } from "./index"
 import Adapter from "enzyme-adapter-react-16"
 import { UniformComponent } from "./UniformComponent"
 
@@ -13,37 +13,31 @@ it("should work together", () => {
     firstName: string
     lastName: string
   }
-  class SimpleUniform extends React.Component<UniformProps<ISimpleData>> {
+  class SimpleUniform extends React.Component<{
+    value: ISimpleData
+    onChange: (data: ISimpleData) => void
+  }> {
     render() {
       return (
-        <form>
-          <UniformInput
-            onChange={this.props.data.change.firstName}
-            value={this.props.data.value.firstName}
-          />
-          <UniformInput
-            onChange={this.props.data.change.lastName}
-            value={this.props.data.value.lastName}
-          />
-          <UniformInputNumber
-            onChange={this.props.data.change.age}
-            value={this.props.data.value.age}
-          />
-        </form>
+        <UniformComponent defaultValue={this.props.value} onChange={this.props.onChange}>
+          {data => (
+            <form>
+              <UniformInput onChange={data.change.firstName} value={data.value.firstName} />
+              <UniformInput onChange={data.change.lastName} value={data.value.lastName} />
+              <UniformInputNumber onChange={data.change.age} value={data.value.age} />
+            </form>
+          )}
+        </UniformComponent>
       )
     }
   }
-
-  const SimpleUniformWrapper = UniformComponent(SimpleUniform)
 
   let update: ISimpleData = {
     age: 1,
     firstName: "foo",
     lastName: "bar",
   }
-  const wrapper = mount(
-    <SimpleUniformWrapper onChange={value => (update = value)} value={update} />,
-  )
+  const wrapper = mount(<SimpleUniform onChange={value => (update = value)} value={update} />)
   const inputs = wrapper.find("input")
   inputs.at(0).simulate("change", { target: { value: "my-firstname" } })
   expect(update).toMatchObject({

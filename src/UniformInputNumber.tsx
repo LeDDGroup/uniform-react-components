@@ -1,13 +1,13 @@
 import * as React from "react"
-import { IProps } from "./UniformComponent"
 import { SafeJoin } from "./type-helpers"
 
 export class UniformInputNumber extends React.Component<
   SafeJoin<
-    SafeJoin<JSX.IntrinsicElements["input"], IProps<number>>,
+    JSX.IntrinsicElements["input"],
     {
       value?: number
       defaultValue?: number
+      onChange?: (value: number) => void
     }
   >
 > {
